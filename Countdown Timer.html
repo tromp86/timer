@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Countdown Timer</title>
+    <style>
+      body {
+        background: linear-gradient(
+          21deg,
+          #fbfbfb 0%,
+          #ebf4ff 40%,
+          #bbbbbb 80%
+        );
+        font-family: Arial, sans-serif;
+        font-size: 24px;
+        color: #575757;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+      }
+      section {
+        height: 100vh;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #ddeaff;
+        background-image: linear-gradient(
+          180deg,
+          #ddeaff 0%,
+          #646464 49%,
+          #312828 100%
+        );
+      }
+      #countdown {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 130px;
+        font-weight: bold;
+        color: #575757;
+        width: 100vw;
+        text-shadow: 5px 3px 11px rgba(0, 0, 0, 0.6);
+      }
+      .countdown {
+        animation-name: blink;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+      }
+      input {
+        font-size: 36px;
+        font-weight: 800;
+        color: #333;
+        border: none;
+        border-radius: 5px;
+        background-color: #dadada;
+        box-shadow: inset 2px 5px 26px -16px rgba(0, 0, 0, 0.75);
+      }
+      #countdown-input {
+        width: 100%;
+        max-width: 230px;
+        padding: 20px;
+        margin-top: 25px;
+        margin-bottom: 10px;
+      }
+      #input-speed {
+        padding: 20px;
+        margin-bottom: 10px;
+        width: 100%;
+        max-width: 230px;
+      }
+
+      #input-lenght {
+        padding: 20px;
+        margin-bottom: 10px;
+        width: 100%;
+        max-width: 230px;
+      }
+      .wrap {
+        height: 130px;
+        display: flex;
+        flex-direction: column;
+        margin-top: 25px;
+        padding: 50px 5px 5px 5px;
+        border-radius: 15px;
+        background-color: #ccc;
+      }
+
+      /* нові правила для переміщення span над input */
+      .wrap span {
+        margin: auto;
+        margin-bottom: 10px;
+      }
+      .container {
+        flex-direction: column;
+        align-items: center;
+        margin: auto;
+        display: flex;
+        max-width: 1200px;
+      }
+      p{
+        font-size: 21px;
+      }
+      .inpu {
+        height: 75px;
+        width: 270px;
+        font-size: 2rem;
+      }
+      button {
+        display: inline-block;
+        width: 100%;
+        max-width: 230px;
+        padding: 20px;
+        margin: 10px;
+        font-size: 24px;
+        color: #fff;
+        background-color: #333;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        box-shadow: inset 10px 10px 30px 1px rgba(0, 0, 0, 0.75);
+      }
+
+      #reset {
+        background-color: #ddd;
+        color: #333;
+      }
+
+      #reset:hover {
+        background-color: #c70000;
+      }
+      .pulse {
+        animation: pulse 1s infinite;
+      }
+      @keyframes blink {
+        0% {
+          background-color: transparent;
+        }
+        50% {
+          color: #fff;
+          background-color: rgba(255, 0, 0, 0.471);
+        }
+        100% {
+          background-color: transparent;
+        }
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        25% {
+          transform: scale(1.1);
+        }
+        75% {
+          transform: scale(0.98);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      @keyframes zoom-in {
+        0% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(1.05);
+        }
+      }
+      #minutes-checkbox {
+        display: none;
+      }
+
+      .toggle {
+        display: inline-block;
+        position: relative;
+        width: 48px;
+        height: 24px;
+        background-color: #ccc;
+        border-radius: 12px;
+        cursor: pointer;
+      }
+
+      .toggle:before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        background-color: #fff;
+        border-radius: 50%;
+        transition: transform 0.2s ease;
+      }
+
+      #minutes-checkbox:checked + .toggle {
+        background-color: #00bfff;
+      }
+
+      #minutes-checkbox:checked + .toggle:before {
+        transform: translateX(24px);
+      }
+
+      input[type="number"]:focus {
+        border-color: rgb(0, 0, 0);
+      }
+      .sec1 {
+        background-color: #e1e1e13a;
+        width: 100%;
+      }
+      .sec2 {
+        background: linear-gradient(
+          21deg,
+          #fbfbfb 0%,
+          #c7e0ff 40%,
+          #bbbbbb 80%
+        );
+        width: 100%;
+      }
+#modal {
+  position: absolute;
+  height: 90vh;
+  width: 90vw;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  background-color: #141414;
+  color: #fff;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  z-index: 3;
+  pointer-events: auto;
+}
+
+#open-modal {
+  background-color: #e50914;
+  width: 60px;
+  color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* #open-modal:hover {
+  background-color: #b2070f;
+} */
+/* ---------- keyframes */
+
+@keyframes zoom {
+  0% {
+    transform: scale(0.1);
+  }
+  30% {
+    transform: scale(1.2);
+  }
+  60% {
+    transform: scale(0.90);
+  }
+  80% {
+    transform: scale(1.05);
+  }
+  90% {
+    transform: scale(0.97);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.modal-content:not(span) {
+  padding: 10px;
+  animation: 0.5s pulse ease-out;
+}
+#range-value{
+  font-size: 2rem;
+  color: #707070;
+  padding: 20px;
+}
+input[type="range"] {
+  width: calc(90% - 120px);
+  border-radius: 5px;
+  outline: none;
+  margin: 50px 10px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px #000000;
+  transform: scale(1.15);
+}
+input[type="range"]:hover {
+ box-shadow: rgb(137, 137, 137) 0px 7px 29px 0px;
+ transform: scale(1.15);
+}
+
+progress{
+  position: absolute;
+  top: 20px;
+  margin: auto;
+  width: 400px;
+  height: 20px;
+  border-radius: 50px;
+box-shadow:  20px 20px 60px #dff0ff,
+             -20px -20px 60px #ffffff;
+}
+
+progress::-webkit-progress-bar {
+  background-color: transparent;
+}
+
+progress::-webkit-progress-value {
+  background-color: #00bfff;
+  transition: width 1.3s ease;
+  border-radius: 15px;
+}
+
+progress::-moz-progress-bar {
+  background-color: #00bfff;
+  transition: width 1.3s ease;
+  border-radius: 15px;
+}
+#range-value{
+  display: none;
+}
+    </style>
+  </head>
+  <body>
+
+    <label>
+      <input type="checkbox" id="minutes-checkbox" checked />
+      <span class="toggle"></span>
+      Use Minutes
+    </label>
+    <progress id="countdown-progress" value="100" max="100"></progress>
+    <div id="countdown">0</div>
+    <!-- </div> -->
+    <section class="sec1">
+      
+      <input type="number" id="countdown-input" min="0" placeholder="0" />
+      <input type="range" id="countdown-range" min="1" max="9" />
+      <span id="range-value"></span>
+      <button id="start">Start Countdown</button>
+      <button id="reset">Reset</button>
+    </section>
+    <section class="sec2">
+      <div class="container">
+        <div class="wrap height">
+          <span>speed per second</span>
+          <input type="number" id="input-speed" min="0" />
+        </div>
+        <div class="wrap height">
+          <span>lenght</span>
+          <input type="number" id="input-lenght" min="0" />
+        </div>
+        <div class="wrap height inpu"></div>
+      </div>
+    </section>
+    <button id="open-modal">notes</button>
+    <div id="modal" class="modal" style = "display: none;">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="container">
+        <h2>tromp86_timer</h2>
+        <p>Звучить добре! Розроблений таймер з обліком хвилин.</p> 
+          <p>Забезпечив користувачів можливістю вибирати формат відображення часу, отримати інформацію про прогрес таймера за допомогою елемента `progress`, а також управляти настройками для швидкості та довжині переміщення якого-небудь предмета.</p>
+          <p>Щоб забезпечити більшу гнучкість, у проекті можливість доналаштування таймера з установкою годин, хвилин і секунд, встановлення кількості повторень таймера та наступну звукову сигнал при завершенні.</p>
+          <p>Розширена функціональність проекту дозволяє встановлювати позначки (крок) на `progress` елемент, щоб відображати, скільки часу залишилося до кінця таймера.</p>
+          <p>Висока гнучкість та чіткий дизайн підвищують зацікавленість користувачів та дозволяють легко налаштувати таймер для потреб вашої аудиторії.</p>
+          <p>Незалежно від того, чи ви використовуєте його для занять фітнесом, управління часом чи будь-якої іншої діяльності, цей таймер допоможе вам досягти вашої мети.</p></div>
+      <!-- </div> -->
+    <script>
+class Countdown {
+  constructor() {
+    this.countdownRange = document.getElementById("countdown-range");
+    this.rangeValue = document.getElementById("range-value");
+    this.countdownProgress = document.getElementById("countdown-progress");
+
+    this.input = document.getElementById("countdown-input");
+    this.countdownElement = document.getElementById("countdown");
+    this.section = document.querySelector("section");
+    this.minutesCheckbox = document.getElementById("minutes-checkbox");
+    this.soundEffect = new Audio("./timer.mp3");
+    this.soundPlayed = false;
+    this.inputSpeed = document.getElementById("input-speed");
+    this.inputLength = document.getElementById("input-lenght");
+    this.inpuDiv = document.querySelector(".wrap.height.inpu");
+
+    this.countdownElement = document.getElementById("countdown");
+
+    this.inputSpeed.addEventListener("input", this.calculateTime.bind(this));
+    this.inputLength.addEventListener("input", this.calculateTime.bind(this));
+    this.countdownRange.addEventListener("input", this.updateRangeValue.bind(this));
+  }
+
+  updateRangeValue() {
+    const value = this.countdownRange.value;
+    this.rangeValue.textContent = value;
+    this.input.value = value;
+  }
+
+  start() {
+    let count = parseInt(this.input.value);
+    if (isNaN(count)) return;
+
+    if (this.minutesCheckbox.checked) {
+      count *= 60;
+    }
+
+    this.countdownElement.innerHTML = count;
+    clearInterval(this.interval); // Зупинка попереднього інтервалу
+    this.interval = setInterval(() => {
+      count--;
+      this.countdownElement.innerHTML = count;
+      this.countdownElement.classList.add("pulse");
+      if (count === 0) {
+        clearInterval(this.interval);
+        this.countdownElement.classList.remove("pulse");
+      } else if (count <= 10 && !this.soundPlayed) {
+        this.section.classList.add("countdown");
+        this.soundEffect.play();
+        this.soundPlayed = true;
+      }
+      this.updateProgress(count);
+    }, 1000);
+  }
+  updateProgress(count) {
+  const maxCount = parseInt(this.input.value);
+  const progressValue = count;
+  this.countdownProgress.value = progressValue;
+}
+        reset() {
+          clearInterval(this.interval);
+          this.countdownElement.innerHTML = "0";
+          this.input.value = "";
+          this.countdownElement.classList.remove("pulse", "countdown");
+          this.soundPlayed = false;
+          this.inputSpeed.value = "";
+          this.inputLength.value = "";
+          this.inpuDiv.textContent = "";
+          this.countdownProgress.value = "";
+        }
+        calculateTime() {
+          const speed = this.inputSpeed.value;
+          const length = this.inputLength.value;
+
+          if (speed && length) {
+            const timeInMinutes = length / speed;
+            this.inpuDiv.textContent = timeInMinutes
+              ? `${timeInMinutes.toFixed(1)} minutes`
+              : "";
+            this.input.value = timeInMinutes;
+          }
+        }
+      }
+      const countdown = new Countdown();
+      document.getElementById("start").addEventListener("click", countdown.start.bind(countdown));
+      document.getElementById("countdown-input")
+        .addEventListener("keypress", (event) => {
+          if (event.key === "Enter") {
+            countdown.start();
+          }
+        });
+      document.getElementById("reset").addEventListener("click", () => {
+        countdown.reset();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.keyCode === 46) {
+          countdown.reset();
+        }
+      });
+
+      //-----Time calc----
+      class TimeCalculator {
+        constructor() {
+          this.inputSpeed = document.getElementById("input-speed");
+          this.inputLength = document.getElementById("input-lenght");
+          this.inpuDiv = document.querySelector(".wrap.height.inpu");
+
+          this.inputSpeed.addEventListener(
+            "input",
+            this.calculateTime.bind(this)
+          );
+          this.inputLength.addEventListener(
+            "input",
+            this.calculateTime.bind(this)
+          );
+        }
+
+        calculateTime() {
+          const speed = this.inputSpeed.value;
+          const length = this.inputLength.value;
+          if (speed && length) {
+            const timeInMinutes = length / speed;
+            this.inpuDiv.textContent = timeInMinutes
+              ? `${timeInMinutes.toFixed(1)} minutes`
+              : "";
+          } else {
+            this.inpuDiv.textContent = "";
+          }
+        }
+      }
+      const timeCalculator = new TimeCalculator();
+
+
+      // -----modal----
+      const openModalBtn = document.getElementById("open-modal");
+      const modal = document.getElementById("modal");
+      const favoritesList = document.getElementById("favorites-list");
+      const closeBtn = document.querySelector(".close");
+      const input = document.getElementById("movie-input");
+      // Відкриваємо модальне вікно при натисканні на кнопку
+      openModalBtn.addEventListener("click", () => {
+        modal.style.display = "block";
+      });
+
+      // Закриваємо модальне вікно при натисканні на "х" або додатковому просторі
+      closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+      });
+
+      window.addEventListener("click", (event) => {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>
